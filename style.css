@@ -1,0 +1,497 @@
+﻿:root {
+    --primary: #CB3211; /* Warm amber / golden for Ayam Geprek Sarjana */
+    --primary-dark: #A1260B;
+    --primary-light: #FFF8E7;
+    --secondary: #059669; /* Emerald green for Kopma / Success */
+    --secondary-light: #d1fae5;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --dark: #1f2937;
+    --gray: #6b7280;
+    --light-gray: #f3f4f6;
+    --border: #e5e7eb;
+    --white: #ffffff;
+    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    --ticket-shadow: 0 20px 30px -10px rgba(5, 150, 105, 0.25);
+    --radius: 16px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: linear-gradient(135deg, #FFFBEB 0%, #FFF5F2 50%, #FEF3C7 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    color: var(--dark);
+}
+
+.app-container {
+    width: 100%;
+    max-width: 420px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Header */
+.app-header {
+    background: linear-gradient(135deg, #CB3211 0%, #A1260B 100%);
+    color: var(--white);
+    padding: 24px 20px 20px;
+    text-align: center;
+    position: relative;
+}
+
+.app-header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: var(--white);
+    border-radius: 20px 20px 0 0;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    font-size: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 4px;
+}
+
+.logo-container h1 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.logo-container p {
+    font-size: 13px;
+    opacity: 0.9;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Views & Transitions */
+.view-section {
+    padding: 24px 20px;
+    display: none;
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.view-section.active {
+    display: block;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Card */
+.card h2 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.card .subtitle {
+    font-size: 13px;
+    color: var(--gray);
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+/* Form */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    color: #9ca3af;
+    font-size: 16px;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 14px 14px 14px 44px;
+    font-size: 16px;
+    font-weight: 600;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.2s ease;
+    background: #f9fafb;
+    color: var(--dark);
+}
+
+.input-wrapper input:focus {
+    border-color: var(--primary);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(203, 50, 17, 0.15);
+}
+
+/* Buttons */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #CB3211 0%, #A1260B 100%);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(203, 50, 17, 0.3);
+    transition: all 0.2s ease;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 12px;
+    background: var(--light-gray);
+    color: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 14px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
+}
+
+/* Note */
+.local-test-note {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray);
+}
+
+.local-test-note a {
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Local Testing Panel */
+.local-testing-panel {
+    margin-top: 24px;
+    padding: 14px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.local-testing-panel h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.local-testing-panel p {
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.local-testing-panel input[type="file"] {
+    width: 100%;
+    font-size: 11px;
+    color: #475569;
+}
+
+.api-config-group {
+    margin-top: 10px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 8px;
+}
+
+.api-config-group label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.api-config-group input {
+    width: 100%;
+    padding: 6px 8px;
+    font-size: 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+}
+
+/* Loading */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    gap: 16px;
+}
+
+.spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Ticket / Success Card */
+.ticket-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+    border: 2px solid var(--secondary);
+    border-radius: var(--radius);
+    padding: 24px 18px;
+    text-align: center;
+    box-shadow: var(--ticket-shadow);
+    position: relative;
+}
+
+.ticket-header {
+    margin-bottom: 18px;
+}
+
+.icon-pulse {
+    font-size: 54px;
+    color: var(--secondary);
+    display: inline-block;
+    animation: pulse 1.8s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.9;
+    }
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+        filter: drop-shadow(0 0 10px rgba(5, 150, 105, 0.4));
+    }
+    100% {
+        transform: scale(0.95);
+        opacity: 0.9;
+    }
+}
+
+.ticket-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-top: 8px;
+    letter-spacing: -0.5px;
+}
+
+.ticket-body {
+    background: var(--white);
+    border: 1px dashed #a7f3d0;
+    border-radius: 12px;
+    padding: 16px 12px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.member-info .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #047857;
+    margin-bottom: 4px;
+}
+
+.value-nama {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--dark);
+    line-height: 1.3;
+}
+
+.value-nia {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #1e3a8a;
+}
+
+.ticket-footer {
+    background: #ecfdf5;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.ticket-footer .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #065f46;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.live-clock {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+}
+
+#live-time {
+    font-size: 26px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: #065f46;
+    letter-spacing: 1px;
+}
+
+.wib {
+    font-size: 13px;
+    font-weight: 700;
+    color: #047857;
+}
+
+.instruction-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #047857;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Error Card */
+.error-card {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.error-icon {
+    font-size: 54px;
+    color: var(--danger);
+    margin-bottom: 12px;
+}
+
+.error-card h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--danger);
+    margin-bottom: 8px;
+}
+
+.error-card p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.app-logo-img {
+    width: 78px;
+    height: 78px;
+    object-fit: contain;
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 3px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    border: 3px solid #FFB902;
+    margin-bottom: 6px;
+}
+.brand-tag {
+    background: #FFB902;
+    color: #231F20;
+    font-weight: 800;
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-top: 3px;
+}

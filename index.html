@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Member Verifikasi - Ayam Geprek Sarjana</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo-container">
+                <img src="logo-ags.jpg" alt="Logo Ayam Geprek Sarjana" class="app-logo-img">
+                <div>
+                    <h1>Ayam Geprek Sarjana</h1>
+                    <span class="brand-tag">KOPMA UNY</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT: INPUT FORM -->
+        <main id="view-input" class="view-section active">
+            <div class="card">
+                <h2>Selamat Datang, Anggota!</h2>
+                <p class="subtitle">Silakan masukkan NIA Anda untuk mendapatkan keuntungan member khusus hari ini.</p>
+                
+                <form id="nia-form">
+                    <div class="input-group">
+                        <label for="nia-input">Nomor Induk Anggota (NIA)</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-id-card input-icon"></i>
+                            <input 
+                                type="text" 
+                                id="nia-input" 
+                                placeholder="Cukup 5 angka pokok (Contoh: 17553)" 
+                                required
+                                autofocus
+                                autocomplete="off"
+                            >
+                        </div>
+                        <p style="font-size: 11px; color: #6b7280; margin-top: 6px;">
+                            <i class="fas fa-check-circle" style="color: #059669;"></i> Praktis: Cukup ketik 5 angka pokoknya saja (misal: <strong>17553</strong> atau <strong>05548</strong>).
+                        </p>
+                    </div>
+                    <button type="submit" id="btn-submit" class="btn-primary">
+                        <span>Verifikasi Member</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="local-test-note">
+                    <p><i class="fas fa-info-circle"></i> Butuh bantuan? <a href="#">Hubungi Kasir</a></p>
+                </div>
+            </div>
+            
+            <!-- Simulasi Upload Excel untuk Testing Lokal (Disembunyikan di produksi) -->
+            <div id="local-testing-panel" class="local-testing-panel" style="display: none;">
+                <h4>Mode Simulasi Offline (Tanpa Google Sheets)</h4>
+                <p>Upload Excel Master Data Anda untuk ujicoba:</p>
+                <input type="file" id="excel-mock-upload" accept=".xlsx, .xls">
+            </div>
+        </main>
+
+        <!-- MAIN CONTENT: LOADING -->
+        <main id="view-loading" class="view-section hidden">
+            <div class="loading-container">
+                <div class="spinner"></div>
+                <p>Memverifikasi NIA...</p>
+            </div>
+        </main>
+
+        <!-- MAIN CONTENT: SUCCESS TICKET -->
+        <main id="view-success" class="view-section hidden">
+            <div class="ticket-card success-card">
+                <div class="ticket-header">
+                    <div class="icon-pulse">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Verifikasi Berhasil!</h2>
+                </div>
+                
+                <div class="ticket-body">
+                    <div class="member-info">
+                        <p class="label">NAMA ANGGOTA</p>
+                        <h3 id="res-nama" class="value-nama">Nama Member</h3>
+                    </div>
+                    <div class="member-info">
+                        <p class="label">NIA</p>
+                        <h4 id="res-nia" class="value-nia">00000</h4>
+                    </div>
+                </div>
+
+                <div class="ticket-footer">
+                    <p class="label">WAKTU VERIFIKASI (LIVE)</p>
+                    <div class="live-clock">
+                        <span id="live-time">00:00:00</span>
+                        <span class="wib">WIB</span>
+                    </div>
+                    <p class="instruction-text">Tunjukkan layar ini ke Kasir</p>
+                </div>
+
+                <button id="btn-back" class="btn-secondary">Selesai</button>
+            </div>
+        </main>
+
+        <!-- MAIN CONTENT: ERROR -->
+        <main id="view-error" class="view-section hidden">
+            <div class="card error-card">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <h2>NIA Tidak Ditemukan</h2>
+                <p id="error-message">Maaf, Nomor Induk Anggota (NIA) yang Anda masukkan tidak terdaftar di sistem kami.</p>
+                
+                <button id="btn-retry" class="btn-primary">Coba Lagi</button>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- SheetJS for local Excel Testing -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
