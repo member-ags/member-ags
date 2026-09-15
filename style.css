@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --primary: #CB3211; /* Warm amber / golden for Ayam Geprek Sarjana */
     --primary-dark: #A1260B;
     --primary-light: #FFF8E7;
@@ -494,4 +494,91 @@ body {
     letter-spacing: 0.5px;
     display: inline-block;
     margin-top: 3px;
+}
+
+/* ========================================================
+   RESPONSIVITAS LAYAR HP (MOBILE VIEW)
+   Mengoptimalkan kartu agar pas memenuhi layar HP layaknya
+   aplikasi native tanpa terpotong atau menyisakan ruang kosong
+   ======================================================== */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 0;
+        margin: 0;
+        background: var(--white);
+        align-items: stretch;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+    }
+
+    .app-container {
+        max-width: 100%;
+        width: 100%;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .app-header {
+        padding: calc(24px + env(safe-area-inset-top, 0px)) 16px 20px;
+    }
+
+    .view-section {
+        flex: 1;
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px 18px calc(24px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .view-section.active {
+        display: flex;
+    }
+
+    .card h2 {
+        font-size: 20px;
+        margin-top: 4px;
+    }
+
+    .card .subtitle {
+        font-size: 13.5px;
+        margin-bottom: 22px;
+    }
+
+    .input-wrapper input {
+        padding: 16px 14px 16px 44px;
+        font-size: 17px; /* Nyaman untuk jempol & mencegah auto-zoom di iOS */
+        border-radius: 12px;
+    }
+
+    .btn-primary {
+        padding: 16px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+
+    .ticket-card {
+        padding: 20px 14px;
+    }
+
+    .ticket-body {
+        padding: 16px 12px;
+        gap: 12px;
+    }
+
+    .value-nama {
+        font-size: 19px;
+    }
+
+    .value-nia {
+        font-size: 21px;
+    }
+
+    #live-time {
+        font-size: 28px;
+    }
 }
