@@ -135,9 +135,24 @@ body {
     }
 }
 
-.view-section.active .card,
-.view-section.active .ticket-card {
+/* Animasi Tiket Verifikasi Meluncur Anggun (Ticket Drop & Unfold) */
+@keyframes ticketEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(-16px) scale(0.97);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.view-section.active .card {
     animation: cardEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.view-section.active .ticket-card {
+    animation: ticketEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Card */
@@ -441,22 +456,41 @@ body {
     font-size: 52px;
     color: #10b981;
     display: inline-block;
-    animation: pulse 1.8s infinite ease-in-out;
+    animation: checkPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, pulse 2s infinite ease-in-out 0.5s;
+    position: relative;
+}
+
+@keyframes checkPopIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+        filter: drop-shadow(0 0 0 rgba(16, 185, 129, 0));
+    }
+    70% {
+        transform: scale(1.22);
+        opacity: 1;
+        filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.6));
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.3));
+    }
 }
 
 @keyframes pulse {
     0% {
-        transform: scale(0.95);
-        opacity: 0.9;
+        transform: scale(0.97);
+        opacity: 0.95;
     }
     50% {
-        transform: scale(1.06);
+        transform: scale(1.05);
         opacity: 1;
-        filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
+        filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.45));
     }
     100% {
-        transform: scale(0.95);
-        opacity: 0.9;
+        transform: scale(0.97);
+        opacity: 0.95;
     }
 }
 
@@ -507,6 +541,26 @@ body {
     display: inline-block;
     border: 1.5px solid #bfdbfe;
     margin-top: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.value-nia::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(29, 78, 216, 0.22), transparent);
+    transform: skewX(-20deg);
+    animation: niaShimmer 3.5s infinite 0.6s ease-in-out;
+}
+
+@keyframes niaShimmer {
+    0% { left: -120%; }
+    30% { left: 160%; }
+    100% { left: 160%; }
 }
 
 /* Kotak Waktu Verifikasi (Dashboard Gelap Kontras Tinggi) */
@@ -533,12 +587,22 @@ body {
     background: #22c55e;
     border-radius: 50%;
     display: inline-block;
-    animation: blinkDot 1s infinite alternate;
+    animation: radarBeacon 1.6s infinite ease-out;
 }
 
-@keyframes blinkDot {
-    0% { opacity: 0.3; transform: scale(0.85); }
-    100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #22c55e; }
+@keyframes radarBeacon {
+    0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.85);
+        transform: scale(0.95);
+    }
+    60% {
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+        transform: scale(1.1);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        transform: scale(0.95);
+    }
 }
 
 .ticket-footer .label {
@@ -689,15 +753,16 @@ body {
 }
 
 .app-logo-img {
-    width: 78px;
-    height: 78px;
+    height: 75px;
+    width: auto;
+    max-width: 120px;
     object-fit: contain;
-    background: #ffffff;
-    border-radius: 50%;
-    padding: 3px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-    border: 3px solid #FFB902;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    border: none;
     margin-bottom: 6px;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
 }
 .brand-tag {
     background: #FFB902;
@@ -745,10 +810,17 @@ body {
     }
 
     .app-logo-img {
-        width: 52px;
-        height: 52px;
+        height: 58px;
+        width: auto;
+        max-width: 95px;
+        object-fit: contain;
         margin-bottom: 3px;
-        padding: 2px;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.25)) !important;
     }
 
     .logo-container h1 {
