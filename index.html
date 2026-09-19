@@ -130,6 +130,44 @@
             text-transform: uppercase !important;
             margin-top: 4px !important;
         }
+        /* INSTRUKSI DI BAWAH KOTAK INPUT */
+        .input-instructions-box {
+            margin-top: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            text-align: left;
+        }
+        .inst-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11.5px;
+            color: #475569;
+            line-height: 1.4;
+        }
+        .inst-badge {
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+        .inst-badge.nia {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+        .inst-badge.nama {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
         @media screen and (max-width: 480px) {
             #live-time { font-size: 38px !important; }
             .value-nama { font-size: 21px !important; }
@@ -159,21 +197,30 @@
                 
                 <form id="nia-form">
                     <div class="input-group">
-                        <label for="nia-input">Nomor Induk Anggota (NIA) atau Nama Lengkap</label>
+                        <label for="nia-input">Nomor Induk Anggota (NIA) atau Nama</label>
                         <div class="input-wrapper">
                             <i class="fas fa-id-card input-icon"></i>
                             <input 
                                 type="text" 
                                 id="nia-input" 
-                                placeholder="Ketik 5 angka NIA atau Nama Lengkap Anda" 
+                                placeholder="Ketik NIA atau Nama di sini..." 
                                 required
                                 autofocus
                                 autocomplete="off"
                             >
                         </div>
-                        <p style="font-size: 11px; color: #6b7280; margin-top: 6px;">
-                            <i class="fas fa-check-circle" style="color: #059669;"></i> Praktis: Cukup ketik <strong>5 angka NIA</strong> atau <strong>Nama Lengkap</strong> Anda.
-                        </p>
+                        
+                        <!-- INSTRUKSI DIPISAHKAN DI BAWAH KOTAK INPUT -->
+                        <div class="input-instructions-box">
+                            <div class="inst-item">
+                                <span class="inst-badge nia">OPSI 1</span>
+                                <span>Ketik <strong>5 angka NIA</strong> Anda (misal: <code>17553</code>)</span>
+                            </div>
+                            <div class="inst-item">
+                                <span class="inst-badge nama">OPSI 2</span>
+                                <span>Lupa NIA? Ketik <strong>Nama Lengkap</strong> Anda</span>
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" id="btn-submit" class="btn-primary">
                         <span>Verifikasi Member</span>
