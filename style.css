@@ -325,22 +325,23 @@ body {
 
 /* Ticket / Success Card */
 .ticket-card {
-    background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
-    border: 2px solid var(--secondary);
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-top: 6px solid #10b981; /* Hanya aksen hijau di bagian atas penanda status */
     border-radius: var(--radius);
-    padding: 24px 18px;
+    padding: 24px 18px 20px;
     text-align: center;
-    box-shadow: var(--ticket-shadow);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     position: relative;
 }
 
 .ticket-header {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .icon-pulse {
-    font-size: 54px;
-    color: var(--secondary);
+    font-size: 52px;
+    color: #10b981;
     display: inline-block;
     animation: pulse 1.8s infinite ease-in-out;
 }
@@ -351,9 +352,9 @@ body {
         opacity: 0.9;
     }
     50% {
-        transform: scale(1.08);
+        transform: scale(1.06);
         opacity: 1;
-        filter: drop-shadow(0 0 10px rgba(5, 150, 105, 0.4));
+        filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
     }
     100% {
         transform: scale(0.95);
@@ -362,18 +363,19 @@ body {
 }
 
 .ticket-header h2 {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
-    color: var(--secondary);
-    margin-top: 8px;
+    color: #065f46;
+    margin-top: 6px;
     letter-spacing: -0.5px;
 }
 
+/* Kotak Data Anggota (Warna Bersih Netral & Biru Tegas - Bukan Hijau) */
 .ticket-body {
-    background: var(--white);
-    border: 1px dashed #a7f3d0;
-    border-radius: 12px;
-    padding: 16px 12px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 18px 14px;
     margin-bottom: 16px;
     display: flex;
     flex-direction: column;
@@ -381,69 +383,105 @@ body {
 }
 
 .member-info .label {
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 700;
-    letter-spacing: 0.5px;
-    color: #047857;
-    margin-bottom: 4px;
+    letter-spacing: 0.8px;
+    color: #64748b; /* Abu-abu netral profesional */
+    margin-bottom: 5px;
+    text-transform: uppercase;
 }
 
 .value-nama {
-    font-size: 18px;
+    font-size: 23px; /* Jauh lebih besar & tebal */
     font-weight: 800;
-    color: var(--dark);
+    color: #0f172a; /* Hitam pekat tajam */
     line-height: 1.3;
 }
 
 .value-nia {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    color: #1e3a8a;
+    font-size: 24px; /* Lebih besar & mencolok */
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #1d4ed8; /* Biru tegas kontras tinggi */
+    background: #eff6ff;
+    padding: 6px 14px;
+    border-radius: 8px;
+    display: inline-block;
+    border: 1.5px solid #bfdbfe;
+    margin-top: 2px;
 }
 
+/* Kotak Waktu Verifikasi (Dashboard Gelap Kontras Tinggi) */
 .ticket-footer {
-    background: #ecfdf5;
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 10px;
+    background: #0f172a; /* Latar gelap pekat, seketika membedakan waktu dari data di atasnya */
+    border-radius: 14px;
+    padding: 20px 14px 16px;
+    margin-bottom: 14px;
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.2);
 }
 
-.ticket-footer .label {
-    font-size: 11px;
-    font-weight: 700;
-    color: #065f46;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-}
-
-.live-date {
-    font-size: 13.5px;
-    font-weight: 700;
-    color: #065f46;
-    margin-bottom: 8px;
+.live-label-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    background: rgba(5, 150, 105, 0.12);
-    padding: 6px 12px;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.live-indicator-dot {
+    width: 9px;
+    height: 9px;
+    background: #22c55e;
+    border-radius: 50%;
+    display: inline-block;
+    animation: blinkDot 1s infinite alternate;
+}
+
+@keyframes blinkDot {
+    0% { opacity: 0.3; transform: scale(0.85); }
+    100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #22c55e; }
+}
+
+.ticket-footer .label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #94a3b8; /* Perak elegan */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.live-date {
+    font-size: 16.5px; /* Jauh lebih besar dan sangat jelas */
+    font-weight: 700;
+    color: #fde047; /* Kuning emas terang khas AGS */
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 8px 14px;
     border-radius: 8px;
+    border: 1px solid rgba(253, 224, 71, 0.25);
 }
 
 .live-clock {
     display: flex;
     align-items: baseline;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
 #live-time {
-    font-size: 26px;
-    font-weight: 800;
+    font-size: 42px; /* Jam Realtime BESAR & JELAS */
+    font-weight: 900;
     font-variant-numeric: tabular-nums;
-    color: #065f46;
-    letter-spacing: 1px;
+    color: #ffffff; /* Putih tajam bercahaya */
+    letter-spacing: 2px;
+    line-height: 1;
 }
 
 /* Candidate selection for name search */
@@ -500,18 +538,30 @@ body {
 }
 
 .wib {
-    font-size: 13px;
-    font-weight: 700;
-    color: #047857;
+    font-size: 14px;
+    font-weight: 800;
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
 }
 
-.instruction-text {
+.instruction-badge, .instruction-text {
+    background: rgba(254, 240, 138, 0.15);
+    color: #facc15;
     font-size: 12px;
-    font-weight: 600;
-    color: #047857;
-    margin-top: 8px;
-    text-transform: uppercase;
+    font-weight: 800;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(250, 204, 21, 0.3);
     letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
 }
 
 /* Error Card */
@@ -638,14 +688,20 @@ body {
     }
 
     .value-nama {
-        font-size: 19px;
-    }
-
-    .value-nia {
         font-size: 21px;
     }
 
+    .value-nia {
+        font-size: 23px;
+        letter-spacing: 2px;
+    }
+
+    .live-date {
+        font-size: 15.5px;
+    }
+
     #live-time {
-        font-size: 28px;
+        font-size: 38px;
+        letter-spacing: 1.5px;
     }
 }
