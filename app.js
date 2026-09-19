@@ -32,6 +32,7 @@ const liveTime = document.getElementById("live-time");
 const btnBack = document.getElementById("btn-back");
 
 const errorMessage = document.getElementById("error-message");
+const errorTitle = document.getElementById("error-title");
 const btnRetry = document.getElementById("btn-retry");
 
 const excelMockUpload = document.getElementById("excel-mock-upload");
@@ -132,6 +133,24 @@ async function handleNiaSubmit(e) {
     const inputVal = niaInput.value.trim();
     if (!inputVal) return;
 
+    // Validasi Cerdas: Jika input mengandung huruf (Pencarian Nama)
+    const isNameQuery = /[a-zA-Z]/.test(inputVal);
+    if (isNameQuery) {
+        const cleanedName = inputVal.replace(/\s+/g, " ").trim();
+        const words = cleanedName.split(" ").filter(w => w.length > 0);
+
+        if (cleanedName.length < 3) {
+            showErrorScreen("Nama yang dimasukkan terlalu pendek. Mohon ketik Nama Lengkap Anda.", "Nama Terlalu Pendek");
+            return;
+        }
+
+        // Jika hanya 1 kata dan sangat pendek (< 5 huruf seperti Siti, Nur, Budi, Ali)
+        if (words.length === 1 && cleanedName.length < 5) {
+            showErrorScreen("Untuk menghindari kekeliruan antaranggota, mohon masukkan Nama Lengkap Anda (minimal 2 kata atau nama resmi sesuai data Kopma).", "Wajib Nama Lengkap");
+            return;
+        }
+    }
+
     showView(viewLoading);
 
     const gasUrl = localStorage.getItem(SCRIPT_URL_STORAGE_KEY) || DEFAULT_GAS_URL;
@@ -168,7 +187,7 @@ async function verifyViaGoogleScript(apiUrl, query) {
         } else if (result.status === "multiple" && result.candidates) {
             showCandidateSelector(result.candidates, apiUrl);
         } else {
-            showErrorScreen(result.message || "Data anggota tidak ditemukan di database.");
+            showErrorScreen(result.message || "Data anggota tidak terdaftar di sistem kami.", "Data Tidak Ditemukan");
         }
     } catch (error) {
         throw error;
@@ -181,7 +200,7 @@ function normalizeNia(val) {
     return String(val).toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
-// Verifikasi via Data Lokal (Bisa dengan NIA atau Nama)
+// Verifikasi via Data Lokal (Bisa dengan NIA atau Nama Lengkap)
 function verifyLocally(inputQuery) {
     if (!inputQuery) return;
     const rawInput = String(inputQuery).toLowerCase().trim();
@@ -205,10 +224,18 @@ function verifyLocally(inputQuery) {
         return false;
     });
 
-    // 2. Cari berdasarkan Nama Anggota (mengandung teks yang diketik)
+    // 2. Cari berdasarkan Nama Anggota (Smart Full-Name Matching)
+    const cleanRawTarget = rawInput.replace(/\s+/g, " ");
+    const targetWords = cleanRawTarget.split(" ").filter(w => w.length > 1);
+
     const nameMatches = localMasterMembers.filter(m => {
-        const memberName = String(m.nama || "").toLowerCase().trim();
-        return memberName.includes(rawInput);
+        const memberName = String(m.nama || "").toLowerCase().replace(/\s+/g, " ").trim();
+        if (memberName.includes(cleanRawTarget)) return true;
+        // Jika input nama terdiri dari minimal 2 kata dan semua kata ada dalam nama anggota
+        if (targetWords.length >= 2 && targetWords.every(word => memberName.includes(word))) {
+            return true;
+        }
+        return false;
     });
 
     // Gabungkan hasil pencarian (hilangkan duplikat)
@@ -224,7 +251,7 @@ function verifyLocally(inputQuery) {
     } else if (allMatches.length > 1) {
         showCandidateSelector(allMatches, null);
     } else {
-        showErrorScreen(`Data anggota "${inputQuery}" tidak terdaftar di master data anggota.`);
+        showErrorScreen(`Data anggota "${inputQuery}" tidak terdaftar di sistem kami. Pastikan penulisan NIA atau Nama Lengkap sudah sesuai.`, "Data Tidak Ditemukan");
     }
 }
 
@@ -268,8 +295,13 @@ function showSuccessScreen(nama, nia) {
 }
 
 // Tampilkan Layar Error
-function showErrorScreen(msg) {
-    errorMessage.textContent = msg;
+function showErrorScreen(msg, title = "Data Tidak Ditemukan") {
+    if (errorTitle) {
+        errorTitle.textContent = title;
+    }
+    if (errorMessage) {
+        errorMessage.textContent = msg;
+    }
     showView(viewError);
 }
 

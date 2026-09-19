@@ -27,17 +27,17 @@
         <main id="view-input" class="view-section active">
             <div class="card">
                 <h2>Selamat Datang, Anggota!</h2>
-                <p class="subtitle">Silakan masukkan NIA atau Nama Anda untuk mendapatkan keuntungan member khusus hari ini.</p>
+                <p class="subtitle">Silakan masukkan NIA atau Nama Lengkap Anda untuk mendapatkan keuntungan member khusus hari ini.</p>
                 
                 <form id="nia-form">
                     <div class="input-group">
-                        <label for="nia-input">Nomor Induk Anggota (NIA) atau Nama</label>
+                        <label for="nia-input">Nomor Induk Anggota (NIA) atau Nama Lengkap</label>
                         <div class="input-wrapper">
                             <i class="fas fa-id-card input-icon"></i>
                             <input 
                                 type="text" 
                                 id="nia-input" 
-                                placeholder="Ketik 5 angka NIA atau Nama Anda" 
+                                placeholder="Ketik 5 angka NIA atau Nama Lengkap Anda" 
                                 required
                                 autofocus
                                 autocomplete="off"
@@ -130,8 +130,8 @@
                 <div class="error-icon">
                     <i class="fas fa-exclamation-circle"></i>
                 </div>
-                <h2>NIA Tidak Ditemukan</h2>
-                <p id="error-message">Maaf, Nomor Induk Anggota (NIA) yang Anda masukkan tidak terdaftar di sistem kami.</p>
+                <h2 id="error-title">Data Anggota Tidak Ditemukan</h2>
+                <p id="error-message">Maaf, data anggota yang Anda masukkan tidak terdaftar di sistem kami.</p>
                 
                 <button id="btn-retry" class="btn-primary">Coba Lagi</button>
             </div>
