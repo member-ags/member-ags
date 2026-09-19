@@ -417,6 +417,20 @@ body {
     margin-bottom: 6px;
 }
 
+.live-date {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #065f46;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(5, 150, 105, 0.12);
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
 .live-clock {
     display: flex;
     align-items: baseline;
@@ -430,6 +444,59 @@ body {
     font-variant-numeric: tabular-nums;
     color: #065f46;
     letter-spacing: 1px;
+}
+
+/* Candidate selection for name search */
+.candidate-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 280px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    padding-right: 2px;
+}
+
+.candidate-item {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.candidate-item:hover, .candidate-item:active {
+    background: #fffbeb;
+    border-color: #FFB902;
+    transform: translateY(-1px);
+}
+
+.candidate-info {
+    flex: 1;
+}
+
+.candidate-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 2px;
+}
+
+.candidate-nia {
+    font-size: 12px;
+    font-weight: 600;
+    color: #CB3211;
+}
+
+.candidate-arrow {
+    color: #9ca3af;
+    font-size: 14px;
+    margin-left: 8px;
 }
 
 .wib {

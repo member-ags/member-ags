@@ -14,6 +14,7 @@ const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycby5Wk9yFyT78i6a
 // DOM Elements
 const viewInput = document.getElementById("view-input");
 const viewLoading = document.getElementById("view-loading");
+const viewSelect = document.getElementById("view-select");
 const viewSuccess = document.getElementById("view-success");
 const viewError = document.getElementById("view-error");
 
@@ -21,8 +22,12 @@ const niaForm = document.getElementById("nia-form");
 const niaInput = document.getElementById("nia-input");
 const btnSubmit = document.getElementById("btn-submit");
 
+const candidateList = document.getElementById("candidate-list");
+const btnCancelSelect = document.getElementById("btn-cancel-select");
+
 const resNama = document.getElementById("res-nama");
 const resNia = document.getElementById("res-nia");
+const liveDateText = document.getElementById("live-date-text");
 const liveTime = document.getElementById("live-time");
 const btnBack = document.getElementById("btn-back");
 
@@ -42,6 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Event Listener Navigasi
     btnBack.addEventListener("click", resetToInput);
     btnRetry.addEventListener("click", resetToInput);
+    if (btnCancelSelect) {
+        btnCancelSelect.addEventListener("click", resetToInput);
+    }
 
     // Event Listener Excel Upload (Uji Coba Lokal)
     if (excelMockUpload) {
@@ -96,7 +104,7 @@ function setupApiConfigUI() {
 
 // Navigasi Tampilan
 function showView(targetView) {
-    [viewInput, viewLoading, viewSuccess, viewError].forEach(v => {
+    [viewInput, viewLoading, viewSelect, viewSuccess, viewError].forEach(v => {
         if (v) {
             v.classList.remove("active");
             v.classList.add("hidden");
@@ -118,7 +126,7 @@ function resetToInput() {
     }, 200);
 }
 
-// Handler Submit NIA
+// Handler Submit NIA / Nama
 async function handleNiaSubmit(e) {
     e.preventDefault();
     const inputVal = niaInput.value.trim();
@@ -146,11 +154,9 @@ async function handleNiaSubmit(e) {
 }
 
 // Verifikasi via Google Apps Script Web App
-async function verifyViaGoogleScript(apiUrl, nia) {
+async function verifyViaGoogleScript(apiUrl, query) {
     try {
-        // Menggunakan POST dengan mode no-cors / cors atau GET JSONP
-        // Apps Script biasanya me-redirect 302, fetch default 'follow'
-        const response = await fetch(`${apiUrl}?action=verify&nia=${encodeURIComponent(nia)}`, {
+        const response = await fetch(`${apiUrl}?action=verify&nia=${encodeURIComponent(query)}`, {
             method: 'GET',
             redirect: 'follow'
         });
@@ -159,8 +165,10 @@ async function verifyViaGoogleScript(apiUrl, nia) {
 
         if (result.status === "success" && result.data) {
             showSuccessScreen(result.data.nama, result.data.nia);
+        } else if (result.status === "multiple" && result.candidates) {
+            showCandidateSelector(result.candidates, apiUrl);
         } else {
-            showErrorScreen(result.message || "NIA tidak ditemukan di database anggota.");
+            showErrorScreen(result.message || "Data anggota tidak ditemukan di database.");
         }
     } catch (error) {
         throw error;
@@ -173,51 +181,81 @@ function normalizeNia(val) {
     return String(val).toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
-// Verifikasi via Data Lokal (Excel yang diupload / Dummy)
-function verifyLocally(nia) {
-    if (!nia) return;
-    const rawInput = String(nia).toLowerCase().trim();
-    const normInput = normalizeNia(nia);
+// Verifikasi via Data Lokal (Bisa dengan NIA atau Nama)
+function verifyLocally(inputQuery) {
+    if (!inputQuery) return;
+    const rawInput = String(inputQuery).toLowerCase().trim();
+    const normInput = normalizeNia(inputQuery);
     const noLeadingZeroInput = normInput.replace(/^0+/, "");
 
-    // Pencarian Cerdas: Mendukung input lengkap, tanpa strip, atau CUKUP 5 ANGKA POKOK (contoh: 17553)
-    const found = localMasterMembers.find(m => {
+    // 1. Cari berdasarkan NIA
+    const niaMatches = localMasterMembers.filter(m => {
         const rawM = String(m.nia || "").toLowerCase().trim();
         const normM = normalizeNia(m.nia);
         
-        // 1. Cocok persis (misal: 2525-17553-01)
         if (rawM === rawInput) return true;
-        
-        // 2. Cocok tanpa strip/simbol (misal: 25251755301)
         if (normM === normInput && normInput !== "") return true;
 
-        // 3. Cocok Bagian/Segmen NIA (misal jika ketik 17553 dari 2525-17553-01 atau 05548 dari 0000-05548)
         const segments = rawM.split(/[^a-z0-9]+/i).filter(Boolean);
         if (segments.some(seg => seg === rawInput || (rawInput.length >= 4 && seg.replace(/^0+/, "") === noLeadingZeroInput))) {
             return true;
         }
 
-        // 4. Jika input minimal 5 karakter, cocokkan jika angka tersebut terkandung di dalam NIA
-        if (normInput.length >= 5 && normM.includes(normInput)) {
-            return true;
-        }
-
-        // 5. Cocok angka penting jika panjang >= 5
-        const noLeadingZeroM = normM.replace(/^0+/, "");
-        if (noLeadingZeroInput.length >= 5 && noLeadingZeroM.includes(noLeadingZeroInput)) {
-            return true;
-        }
-
+        if (normInput.length >= 5 && normM.includes(normInput)) return true;
         return false;
     });
 
-    if (found) {
-        // Simpan log ke rekap lokal di browser (localStorage)
+    // 2. Cari berdasarkan Nama Anggota (mengandung teks yang diketik)
+    const nameMatches = localMasterMembers.filter(m => {
+        const memberName = String(m.nama || "").toLowerCase().trim();
+        return memberName.includes(rawInput);
+    });
+
+    // Gabungkan hasil pencarian (hilangkan duplikat)
+    const combinedMap = new Map();
+    niaMatches.forEach(m => combinedMap.set(m.nia, m));
+    nameMatches.forEach(m => combinedMap.set(m.nia, m));
+    const allMatches = Array.from(combinedMap.values());
+
+    if (allMatches.length === 1) {
+        const found = allMatches[0];
         recordLocalTransaction(found);
         showSuccessScreen(found.nama, found.nia);
+    } else if (allMatches.length > 1) {
+        showCandidateSelector(allMatches, null);
     } else {
-        showErrorScreen(`Nomor Induk Anggota "${nia}" tidak terdaftar di master data anggota.`);
+        showErrorScreen(`Data anggota "${inputQuery}" tidak terdaftar di master data anggota.`);
     }
+}
+
+// Tampilkan Pemilih Nama Jika Ditemukan Lebih Dari 1 Anggota
+function showCandidateSelector(candidates, apiUrl) {
+    if (!candidateList) return;
+    candidateList.innerHTML = "";
+
+    candidates.forEach(c => {
+        const item = document.createElement("div");
+        item.className = "candidate-item";
+        item.innerHTML = `
+            <div class="candidate-info">
+                <div class="candidate-name">${c.nama}</div>
+                <div class="candidate-nia">NIA: ${c.nia}</div>
+            </div>
+            <i class="fas fa-chevron-right candidate-arrow"></i>
+        `;
+        item.addEventListener("click", () => {
+            if (apiUrl) {
+                showView(viewLoading);
+                verifyViaGoogleScript(apiUrl, c.nia);
+            } else {
+                recordLocalTransaction(c);
+                showSuccessScreen(c.nama, c.nia);
+            }
+        });
+        candidateList.appendChild(item);
+    });
+
+    showView(viewSelect);
 }
 
 // Tampilkan Layar Sukses dengan Live Clock
@@ -235,7 +273,7 @@ function showErrorScreen(msg) {
     showView(viewError);
 }
 
-// Jam Digital Real-time dengan Detik Bergerak (Bukti Otentik ke Kasir)
+// Jam Digital Real-time dengan Tanggal, Hari, dan Detik Bergerak (Bukti Otentik ke Kasir)
 function startLiveClock() {
     stopLiveClock();
     updateClock();
@@ -251,6 +289,11 @@ function updateClock() {
     
     if (liveTime) {
         liveTime.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    if (liveDateText) {
+        const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        liveDateText.textContent = now.toLocaleDateString('id-ID', options);
     }
 }
 

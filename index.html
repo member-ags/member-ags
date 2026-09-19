@@ -27,24 +27,24 @@
         <main id="view-input" class="view-section active">
             <div class="card">
                 <h2>Selamat Datang, Anggota!</h2>
-                <p class="subtitle">Silakan masukkan NIA Anda untuk mendapatkan keuntungan member khusus hari ini.</p>
+                <p class="subtitle">Silakan masukkan NIA atau Nama Anda untuk mendapatkan keuntungan member khusus hari ini.</p>
                 
                 <form id="nia-form">
                     <div class="input-group">
-                        <label for="nia-input">Nomor Induk Anggota (NIA)</label>
+                        <label for="nia-input">Nomor Induk Anggota (NIA) atau Nama</label>
                         <div class="input-wrapper">
                             <i class="fas fa-id-card input-icon"></i>
                             <input 
                                 type="text" 
                                 id="nia-input" 
-                                placeholder="Cukup 5 angka pokok (Contoh: 17553)" 
+                                placeholder="Ketik 5 angka NIA atau Nama Anda" 
                                 required
                                 autofocus
                                 autocomplete="off"
                             >
                         </div>
                         <p style="font-size: 11px; color: #6b7280; margin-top: 6px;">
-                            <i class="fas fa-check-circle" style="color: #059669;"></i> Praktis: Cukup ketik 5 angka pokoknya saja (misal: <strong>17553</strong> atau <strong>05548</strong>).
+                            <i class="fas fa-check-circle" style="color: #059669;"></i> Praktis: Cukup ketik <strong>5 angka NIA</strong> atau <strong>Nama Lengkap</strong> Anda.
                         </p>
                     </div>
                     <button type="submit" id="btn-submit" class="btn-primary">
@@ -70,7 +70,19 @@
         <main id="view-loading" class="view-section hidden">
             <div class="loading-container">
                 <div class="spinner"></div>
-                <p>Memverifikasi NIA...</p>
+                <p>Memverifikasi data anggota...</p>
+            </div>
+        </main>
+
+        <!-- MAIN CONTENT: CANDIDATE SELECTOR (JIKA NAMA DITEMUKAN LEBIH DARI 1) -->
+        <main id="view-select" class="view-section hidden">
+            <div class="card">
+                <h2>Pilih Nama Anggota</h2>
+                <p class="subtitle" id="select-subtitle">Ditemukan beberapa anggota dengan nama serupa. Silakan pilih akun Anda:</p>
+                <div id="candidate-list" class="candidate-list">
+                    <!-- Daftar nama akan dibuat secara dinamis -->
+                </div>
+                <button id="btn-cancel-select" class="btn-secondary">Kembali</button>
             </div>
         </main>
 
@@ -97,6 +109,10 @@
 
                 <div class="ticket-footer">
                     <p class="label">WAKTU VERIFIKASI (LIVE)</p>
+                    <div class="live-date">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="live-date-text">Sabtu, 19 September 2026</span>
+                    </div>
                     <div class="live-clock">
                         <span id="live-time">00:00:00</span>
                         <span class="wib">WIB</span>
